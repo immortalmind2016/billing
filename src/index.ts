@@ -2,7 +2,7 @@ import 'reflect-metadata'; // Import at the very top of the file
 import { Hono } from 'hono';
 import { container } from './config/di-config';
 import { SubscriptionHandler } from './modules/subscriptions/handlers';
-import swaggerDoc from '../build/swagger.json'; // Adjust the path to your generated swagger.json
+import swaggerDoc from '../build/swagger.json';
 
 class App {
 	static app = new Hono();
@@ -42,13 +42,15 @@ class App {
 						`);
 					});
 
-					  // Serve the swagger.json file
 				app.get('/swagger.json', (c) => {
 				return c.json(swaggerDoc);
 				});
+
 					this.app.route('/api/subscriptions', SubscriptionHandler.routes());
 					this.isDefinedRoutes = true;
 				}
+
+
 				return app.fetch(request, env, ctx);
 			},
 		};

@@ -8,6 +8,8 @@
 	  "specVersion": 3
 	},
 	"routes": {
-	  "routesDir": "build"
+	  "routesDir": "build",
+	  "middlewareTemplate": "./hono.template.hbs"
+
 	}
   }

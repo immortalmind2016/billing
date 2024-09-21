@@ -6,7 +6,66 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"BillingCycle": {
+				"enum": [
+					"monthly",
+					"yearly"
+				],
+				"type": "string"
+			},
+			"SubscriptionPlan": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"billingCycle": {
+						"$ref": "#/components/schemas/BillingCycle"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"billingCycle",
+					"price",
+					"status",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_SubscriptionPlan_": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"billingCycle": {
+						"$ref": "#/components/schemas/BillingCycle"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -15,7 +74,7 @@
 		"contact": {}
 	},
 	"paths": {
-		"/api/subscription": {
+		"/api/subscriptions/plans": {
 			"get": {
 				"operationId": "List",
 				"responses": {
@@ -60,6 +119,172 @@
 				},
 				"security": [],
 				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"billingCycle": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"price",
+										"billingCycle",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SubscriptionPlan"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/subscriptions/plans/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"billingCycle": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"price",
+										"billingCycle",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_SubscriptionPlan_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"status": {
+											"type": "string"
+										},
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"billingCycle": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"status",
+										"price",
+										"billingCycle",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
