@@ -1,18 +1,30 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import 'reflect-metadata'; // Import at the very top of the file
+import { Hono } from 'hono';
+import { container } from './di-config';
+import { TYPES } from './types';
+import { SubscriptionController } from './modules/subscriptions/subscriptions.controller';
+
+
+
+
+// Initialize the app
+const app = new Hono();
+
+// Get controllers from DI container
 
 export default {
-	async fetch(request, env, ctx): Promise<Response> {
-		return new Response('Hello World!');
-	},
-} satisfies ExportedHandler<Env>;
+  fetch(request: Request, env: Env, ctx: ExecutionContext) {
+
+		container.bind<Env>('Env').toConstantValue(env);
+
+		const subscriptionController = container.get<SubscriptionController>(TYPES.SubscriptionController);
+
+
+			app.get("/subscription-plans",async (ctx) =>{
+				return ctx.json(await subscriptionController.list())
+			});
+
+
+    return app.fetch(request, env, ctx)
+  },
+}

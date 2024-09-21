@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id                 String           @id @default(cuid())
+  name               String
+  email              String           @unique
+  subscriptionPlanId String
+  subscriptionStatus String
+  subscriptionPlan   SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
+  invoices           Invoice[]
+}
+
+model SubscriptionPlan {
+  id           String     @id @default(cuid())
+  name         String
+  billingCycle String
+  price        Float
+  status       String
+  customers    Customer[]
+}
+
+model Invoice {
+  id             String   @id @default(cuid())
+  customerId     String
+  amount         Float
+  dueDate        DateTime
+  paymentStatus  String
+  paymentDate    DateTime?
+  customer       Customer @relation(fields: [customerId], references: [id])
+  payment        Payment?
+}
+
+model Payment {
+  id           String  @id @default(cuid())
+  invoiceId    String  @unique  // Add @unique here
+  amount       Float
+  paymentMethod String
+  paymentDate  DateTime
+  invoice      Invoice @relation(fields: [invoiceId], references: [id])
+}
