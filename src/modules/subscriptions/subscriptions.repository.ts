@@ -1,25 +1,35 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClientWrapper } from '../../config/dbClient';
+import { SubscriptionPlan } from '@prisma/client';
 
 @injectable()
-export class SubscriptionRepository<T> {
+export class SubscriptionRepository {
+  private prisma: PrismaClientWrapper;
 
-	private prisma: PrismaClientWrapper;
+  constructor(@inject(PrismaClientWrapper) prisma: PrismaClientWrapper) {
+    this.prisma = prisma;
+  }
 
-	constructor(@inject(PrismaClientWrapper) prisma: PrismaClientWrapper) {
-		this.prisma = prisma;
-	}
+  async findAll(): Promise<SubscriptionPlan[]> {
+    return this.prisma.client.subscriptionPlan.findMany();
+  }
 
-	 // Find all Subscription Plans
-	 async findAll(): Promise<SubscriptionPlan[]> {
-		return this.prisma.client.subscriptionPlan.findMany();
-	  }
+  async create(data: Omit<SubscriptionPlan, 'id'>): Promise<SubscriptionPlan> {
+    return this.prisma.client.subscriptionPlan.create({
+      data,
+    });
+  }
 
-	//   findById(id: string) {
-	//     return this.model.findById(id).exec();
-	//   }
+  async update(id: string, data: Partial<Omit<SubscriptionPlan, 'id'>>): Promise<SubscriptionPlan | null> {
+    return this.prisma.client.subscriptionPlan.update({
+      where: { id },
+      data,
+    });
+  }
 
-	//   create(data: any) {
-	//     return this.model.create(data);
-	//   }
+  async delete(id: string): Promise<SubscriptionPlan | null> {
+    return this.prisma.client.subscriptionPlan.delete({
+      where: { id },
+    });
+  }
 }

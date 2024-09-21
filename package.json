@@ -7,6 +7,7 @@
     "dev": "wrangler dev",
     "start": "wrangler dev",
     "test": "vitest",
+		"generate-spec":"tsoa ",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
@@ -19,8 +20,12 @@
   "dependencies": {
     "@prisma/adapter-d1": "^5.19.1",
     "@prisma/client": "^5.19.1",
+    "@tsoa/runtime": "^6.4.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "hono": "^4.6.2",
     "inversify": "^6.0.2",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "tsoa": "^6.4.0"
   }
 }
