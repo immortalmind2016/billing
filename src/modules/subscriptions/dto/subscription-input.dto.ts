@@ -1,8 +1,26 @@
 import "reflect-metadata";
-import { IsEnum, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 import { BillingCycle } from "../types";
 
+export class SubscriptionUpdateDto{
+	@IsString()
+	@IsOptional()
+  name?: string;
 
+  @IsEnum(BillingCycle)
+	@IsOptional()
+  billingCycle?: BillingCycle;
+
+  @IsNumber()
+	@IsOptional()
+  price?: number;
+
+  @IsString()
+	@IsOptional()
+  status?: string;
+
+
+}
 export class SubscriptionPlanInput {
 	@IsString()
   name: string;

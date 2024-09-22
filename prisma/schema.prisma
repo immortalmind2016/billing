@@ -14,9 +14,9 @@ model Customer {
   id                 String           @id @default(cuid())
   name               String
   email              String           @unique
-  subscriptionPlanId String
-  subscriptionStatus String
-  subscriptionPlan   SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
+  subscriptionPlanId String?
+  subscriptionStatus String?
+  subscriptionPlan   SubscriptionPlan? @relation(fields: [subscriptionPlanId], references: [id])
   invoices           Invoice[]
 }
 

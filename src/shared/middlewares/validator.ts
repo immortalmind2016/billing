@@ -2,7 +2,7 @@ import { validate } from 'class-validator';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { Context } from 'hono';
 
-type ValidationSource = 'body' | 'query';
+type ValidationSource = 'body' | 'query' | 'param' ;
 
 export function validateDto<T extends object>(dtoClass: any, source: ValidationSource) {
   return async (c: Context, next: () => Promise<void>) => {
@@ -14,6 +14,8 @@ export function validateDto<T extends object>(dtoClass: any, source: ValidationS
         data = await c.req.json();
       } else if (source === 'query') {
         data = c.req.query();
+      } else if (source === 'param') {
+        data = c.req.param();
       }
 
       const dtoInstance = plainToInstance(dtoClass, data);

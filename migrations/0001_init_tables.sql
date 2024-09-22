@@ -3,9 +3,9 @@ CREATE TABLE "Customer" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "subscriptionPlanId" TEXT NOT NULL,
-    "subscriptionStatus" TEXT NOT NULL,
-    CONSTRAINT "Customer_subscriptionPlanId_fkey" FOREIGN KEY ("subscriptionPlanId") REFERENCES "SubscriptionPlan" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "subscriptionPlanId" TEXT,
+    "subscriptionStatus" TEXT,
+    CONSTRAINT "Customer_subscriptionPlanId_fkey" FOREIGN KEY ("subscriptionPlanId") REFERENCES "SubscriptionPlan" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
