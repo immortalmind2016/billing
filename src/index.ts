@@ -1,8 +1,9 @@
 import 'reflect-metadata'; // Import at the very top of the file
-import { Hono } from 'hono';
+import { ExecutionContext, Hono } from 'hono';
 import { container } from './config/di-config';
 import { SubscriptionHandler } from './modules/subscriptions/handlers';
 import swaggerDoc from '../build/swagger.json';
+import { CustomerHandler } from './modules/customers/handlers';
 
 class App {
 	static app = new Hono();
@@ -14,8 +15,9 @@ class App {
 		return {
 			fetch: (request: Request, env: Env, ctx: ExecutionContext) => {
 				if (!this.isDefinedRoutes) {
-					container.bind<Env>('Env').toConstantValue(env);
 
+					container.bind('Env').toConstantValue(env);
+						console.log({EEEEEEE:env})
 					this. app.get('/api-docs', (c) => {
 						return c.html(`
 							<html>
@@ -46,8 +48,10 @@ class App {
 				return c.json(swaggerDoc);
 				});
 
-					this.app.route('/api/subscriptions', SubscriptionHandler.routes());
-					this.isDefinedRoutes = true;
+				app.route('/api/subscriptions', SubscriptionHandler.routes());
+				app.route('/api/customers', CustomerHandler.routes());
+
+				this.isDefinedRoutes = true;
 				}
 
 

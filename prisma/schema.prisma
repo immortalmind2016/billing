@@ -14,8 +14,10 @@ model Customer {
   id                 String           @id @default(cuid())
   name               String
   email              String           @unique
+	password					 String
   subscriptionPlanId String?
   subscriptionStatus String?
+	subscriptionStartData DateTime?
   subscriptionPlan   SubscriptionPlan? @relation(fields: [subscriptionPlanId], references: [id])
   invoices           Invoice[]
 }

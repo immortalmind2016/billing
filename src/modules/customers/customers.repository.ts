@@ -14,7 +14,15 @@ export class CustomerRepository {
     return this.prisma.client.customer.findMany();
   }
 
-  async create(data: Pick<Customer,"email"|"name">): Promise<Customer> {
+	async findOne(id:string): Promise<Customer|null> {
+    return this.prisma.client.customer.findUnique({
+			where:{
+				id
+			}
+		})
+  }
+
+  async create(data: Pick<Customer,"email"|"name"|"password">): Promise<Customer> {
     return this.prisma.client.customer.create({
       data,
     });
@@ -30,6 +38,12 @@ export class CustomerRepository {
   async delete(id: string): Promise<Customer | null> {
     return this.prisma.client.customer.delete({
       where: { id },
+    });
+  }
+
+	async findByEmail(email: string): Promise<Customer | null> {
+    return this.prisma.client.customer.findUnique({
+      where: { email },
     });
   }
 }

@@ -41,3 +41,13 @@ export class SubscriptionPlanInput {
     this.status = status;
   }
 }
+
+
+export class CreateCustomerSubscriptionDto{
+	@IsString()
+  id: string;
+
+  constructor(id: string) {
+    this.id = id;
+  }
+}

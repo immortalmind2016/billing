@@ -277,32 +277,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"status": {
-											"type": "string"
-										},
-										"price": {
-											"type": "number",
-											"format": "double"
-										},
-										"billingCycle": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"id": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"status",
-										"price",
-										"billingCycle",
-										"name",
-										"id"
-									],
-									"type": "object"
+									"type": "string"
 								}
 							}
 						}
@@ -321,7 +296,69 @@
 				]
 			}
 		},
-		"/api/customers/plans": {
+		"/api/subscriptions/customers/{customerId}/subscription": {
+			"post": {
+				"operationId": "Subscribe",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"subscriptionStatus": {
+											"type": "string"
+										},
+										"subscriptionPlanId": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"subscriptionStatus",
+										"subscriptionPlanId",
+										"email",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "customerId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/customers": {
 			"get": {
 				"operationId": "List",
 				"responses": {
@@ -418,7 +455,57 @@
 				}
 			}
 		},
-		"/api/customers/plans/{id}": {
+		"/api/customers/{id}": {
+			"get": {
+				"operationId": "Find",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"subscriptionStatus": {
+											"type": "string"
+										},
+										"subscriptionPlanId": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"subscriptionStatus",
+										"subscriptionPlanId",
+										"email",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -478,56 +565,6 @@
 						}
 					}
 				}
-			},
-			"delete": {
-				"operationId": "Delete",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"subscriptionStatus": {
-											"type": "string"
-										},
-										"subscriptionPlanId": {
-											"type": "string"
-										},
-										"email": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"id": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"subscriptionStatus",
-										"subscriptionPlanId",
-										"email",
-										"name",
-										"id"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		}
 	},

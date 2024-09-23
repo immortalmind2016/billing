@@ -1,11 +1,11 @@
-import { Hono } from 'hono';
+import { Context, Hono } from 'hono';
 import { container } from '../../config/di-config';
 import { TYPES } from '../../types';
 import { validateDto } from '../../shared/middlewares/validator';
-import { CustomerInput,CustomerUpdateDto } from './dto/customer-input.dto';
+import { CustomerInput,CustomerLoginDto,CustomerUpdateDto } from './dto/customer-input.dto';
 import { CustomerController } from './customers.controller';
-import { Customer } from '@prisma/client';
 import { QueryParamDto } from '../../shared/dto/query.dto';
+import { jwtAuthMiddleware } from '../../shared/middlewares/auth';
 
 export class CustomerHandler{
 	static app:Hono | null=null;
@@ -15,23 +15,25 @@ export class CustomerHandler{
 		}
 		this.app = new Hono();
 
-		const subscriptionController = container.get<CustomerController>(TYPES.CustomerController);
-		this.app.get('/', async (ctx) => {
-			return ctx.json(await subscriptionController.list());
-		});
-		this.app.post('/',validateDto(CustomerInput,"body"), async (c) => {
-			const data = await c.req.json();
-			return c.json(await subscriptionController.create(data));
-		});
-		this.app.put('/:id',validateDto(CustomerUpdateDto,"body"),validateDto(QueryParamDto,"param"), async (c) => {
-			const data = await c.req.json();
-			const id = c.req.param('id')
+		const customerController = container.get<CustomerController>(TYPES.CustomerController);
 
-			return c.json(await subscriptionController.update(id,data));
+		this.app.post('/signup',validateDto(CustomerInput,"body"), async (c) => {
+			const data = await c.req.json();
+			return c.json(await customerController.signup(data));
 		});
-		this.app.delete('/:id',validateDto(QueryParamDto,"param"), async (c) => {
-			const id = c.req.param('id')
-			return c.json(await subscriptionController.delete(id));
+		this.app.post('/login',validateDto(CustomerLoginDto,"body"), async (c) => {
+			const data = await c.req.json();
+			return c.json(await customerController.login(data));
+		});
+		this.app.put('/',jwtAuthMiddleware,validateDto(CustomerUpdateDto,"body"), async (c:Context) => {
+			const data = await c.req.json();
+			const id = c.get('userId'); // Retrieve the user ID from the context
+
+			return c.json(await customerController.update(id,data));
+		});
+		this.app.get('/me',jwtAuthMiddleware, async (c:Context) => {
+			const id = c.get('userId'); // Retrieve the user ID from the context
+			return c.json(await customerController.find(id));
 		});
 		return this.app;
 	}

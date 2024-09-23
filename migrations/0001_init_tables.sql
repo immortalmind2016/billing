@@ -3,8 +3,10 @@ CREATE TABLE "Customer" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "subscriptionPlanId" TEXT,
     "subscriptionStatus" TEXT,
+    "subscriptionStartData" DATETIME,
     CONSTRAINT "Customer_subscriptionPlanId_fkey" FOREIGN KEY ("subscriptionPlanId") REFERENCES "SubscriptionPlan" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
