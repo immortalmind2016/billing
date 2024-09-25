@@ -168,6 +168,7 @@ The webhook expects a JSON payload with the following structure:
 - Add more error handling
 - Add admin middleware to protect the endpoints.
 - Add more tests.
+- Add integration tests.
 - Refactor the part of swagger endpoint in different file separatly.
 - Handle already subscribed customers.
 
