@@ -22,6 +22,7 @@ use the following link to access the swagger ui:
 
 ## CI / github actions
 - linting
+- testing
 
 ## Flow overview summary
 
@@ -202,5 +203,4 @@ The webhook expects a JSON payload with the following structure:
 - Refactor the part of swagger endpoint in different file separatly.
 - Handle already subscribed customers.
 - Add migration files as per the db changes.
-- Add ci for testing
 
