@@ -7,6 +7,8 @@ import { CustomerHandler } from './modules/customers/handlers';
 import { InvoicesHandler } from './modules/invoices/handlers';
 import { PaymentsHandler } from './modules/payments/handlers';
 import { retryFailedPayment } from './jobs/retry-failed-payment';
+import { autoBilling } from './jobs/auto-billing';
+import { autoInactiveSubscription } from './jobs/auto-inactive-subscription';
 
 class App {
 	static app = new Hono();
@@ -65,7 +67,14 @@ class App {
 			},
 			scheduled: async (event: ScheduledEvent, env: Env, ctx: ExecutionContext) => {
 				console.log('Scheduled event triggered');
-				ctx.waitUntil(retryFailedPayment(env));
+				ctx.waitUntil(
+					Promise.all([
+						retryFailedPayment(env),
+						autoBilling(env),
+						autoInactiveSubscription(env)
+					])
+				);
+				
 			  },
 		};
 	}

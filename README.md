@@ -1,0 +1,113 @@
+# Subscription Management System
+
+## Flow Overview
+
+### 1. Customer Signup
+
+- **Entities:** `Customer`
+- **Action:** A new customer signs up for the service.
+- **Status:**
+  - `Customer.id`: Unique identifier generated.
+  - `Customer.name`: Set to provided name.
+  - `Customer.email`: Set to provided email.
+  - `Customer.password`: Hashed and stored.
+  - `Customer.subscriptionPlanId`: Null (not subscribed yet).
+  - `Customer.subscriptionStatus`: Null.
+  - `Customer.subscriptionStartData`: Null.
+
+### 2. Subscription Selection
+
+- **Entities:** `Customer`, `SubscriptionPlan`
+- **Action:** Customer selects a subscription plan.
+- **Status:**
+  - `Customer.subscriptionPlanId`: Updated with selected plan ID.
+  - `Customer.subscriptionStatus`: Set to "ACTIVE".
+  - `Customer.subscriptionStartData`: Set to current date.
+
+### 3. Invoice Generation
+
+- **Entities:** `Invoice`, `Customer`, `SubscriptionPlan`
+- **Action:** System generates an invoice for the subscription.
+- **Status:**
+  - `Invoice.id`: Unique identifier generated.
+  - `Invoice.customerId`: Set to customer's ID.
+  - `Invoice.amount`: Calculated based on subscription plan (see calculation details below).
+  - `Invoice.dueDate`: Set based on billing cycle (e.g., 30 days from now for monthly).
+  - `Invoice.paymentStatus`: Set to "PENDING".
+  - `Invoice.status`: Set to "GENERATED".
+
+### 4. Payment Intent Creation
+
+- **Entities:** `Payment`, `Invoice`
+- **Action:** System creates a payment intent for the invoice.
+- **Status:**
+  - `Payment.id`: Unique identifier generated.
+  - `Payment.invoiceId`: Linked to the generated invoice.
+  - `Payment.amount`: Set to invoice amount.
+  - `Payment.paymentMethod`: Not set yet.
+  - `Payment.paymentDate`: Not set yet.
+
+### 5. Payment Processing
+
+- **Entities:** `Payment`, `Invoice`
+- **Action:** Customer makes a payment for the invoice.
+- **Status:**
+  - `Payment.paymentMethod`: Updated with payment method used.
+  - `Payment.paymentDate`: Set to current date.
+  - `Invoice.paymentStatus`: Updated to "PAID".
+  - `Invoice.status`: Updated to "ISSUED".
+  - `Invoice.paymentDate`: Set to current date.
+
+### 6. Cron Jobs
+
+The system includes three cron jobs to handle various automated tasks:
+
+#### a. Retry Failed Payments (`retry-failed-payment.ts`)
+- **Purpose:** Processes failed payment invoices and attempts to retry the payment.
+- **Actions:**
+  - Finds invoices with failed payment status.
+  - Increments retry attempts for each invoice.
+  - Sends a notification email to the customer for retry.
+  - Stops retrying after reaching the maximum retry attempts.
+
+#### b. Auto-Billing (`auto-billing.ts`)
+- **Purpose:** Processes expiring subscriptions and creates new invoices.
+- **Actions:**
+  - Identifies subscriptions expiring on the current day.
+  - Creates new invoices for these subscriptions.
+  - Generates payment intents for the new invoices.
+  - Sends renewal notifications to customers.
+
+#### c. Auto-Inactive Subscription (`auto-inactive-subscription.ts`)
+- **Purpose:** Marks subscriptions as inactive one day after their end date.
+- **Actions:**
+  - Identifies subscriptions that expired the previous day.
+  - Updates the subscription status to 'INACTIVE' for these customers.
+  - Sends expiration notifications to affected customers.
+
+These cron jobs ensure that the subscription system operates smoothly, handling payment retries, automatic renewals, and subscription status updates without manual intervention.
+
+## Invoice Amount Calculation
+
+The invoice amount is calculated based on the subscription plan and any prorated charges. Here's how it works:
+
+1. **Full Billing Cycle:**
+   - Amount = Subscription Plan Price
+
+2. **Prorated Billing (for partial periods):**
+   - Daily Rate = Subscription Plan Price / Days in Billing Cycle
+   - Prorated Days = Days from Start to End of Partial Period
+   - Prorated Amount = Daily Rate * Prorated Days
+
+3. **Mathematical Description:**
+   ```
+   Invoice Amount = (Subscription Plan Price / Days in Billing Cycle) * Days in Current Period
+   ```
+
+   Where:
+   - Days in Billing Cycle: 30 for monthly, 90 for quarterly, 365 for yearly
+   - Days in Current Period: Number of days from the start of the subscription (or last billing date) to the end of the current period (or cancellation date)
+
+This calculation ensures that customers are billed accurately for the exact duration of their subscription, even if they start or end their subscription mid-cycle.
+
+

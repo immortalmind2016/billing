@@ -5,6 +5,7 @@ import { CustomerInput } from './dto/customer-input.dto';
 import { CustomerRepository } from './customers.repository';
 import { compare, hash } from 'bcryptjs';
 import { sign } from '@tsndr/cloudflare-worker-jwt';
+import { SubscriptionPlanStatus } from '../subscriptions/types';
 
 @injectable()
 export class CustomerService {
@@ -57,10 +58,7 @@ export class CustomerService {
     });
   }
 
-  async updateSubscription(customerId: string, {subscriptionPlanId,subscriptionStartData}:{subscriptionPlanId:string,subscriptionStartData:Date} ): Promise<Customer | null> {
-    return this.customerRepository.update(customerId, {
-      subscriptionPlanId,
-      subscriptionStartData,
-    });
+  async updateSubscription(customerId: string, input:Partial<Customer> ): Promise<Customer | null> {
+    return this.customerRepository.update(customerId, input);
   }
 }
