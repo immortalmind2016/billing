@@ -9,15 +9,20 @@
     "test": "vitest",
     "generate-spec": "tsoa spec",
     "cf-typegen": "wrangler types",
-    "lint": "eslint ."
+    "lint": "eslint ./src"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.5.2",
     "@cloudflare/workers-types": "^4.20240919.0",
+    "@eslint/js": "^9.11.1",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
     "eslint": "^9.11.1",
     "eslint-plugin-react": "^7.36.1",
+    "globals": "^15.9.0",
     "libphonenumber-js": "^1.11.9",
     "typescript": "^5.5.2",
+    "typescript-eslint": "^8.7.0",
     "vitest": "2.0.5",
     "wrangler": "^3.78.8"
   },

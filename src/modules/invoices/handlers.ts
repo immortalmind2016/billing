@@ -1,4 +1,4 @@
-import { Context, Hono } from 'hono';
+import { Hono } from 'hono';
 import { container } from '../../config/di-config';
 import { TYPES } from '../../types';
 import { InvoicesController } from './invoices.controller';
@@ -18,7 +18,6 @@ export class InvoicesHandler {
 		});
 
 		this.app.get('/', async (ctx) => {
-			console.log('get invoices');
 			return ctx.json(await invoicesController.getInvoices());
 		});
 

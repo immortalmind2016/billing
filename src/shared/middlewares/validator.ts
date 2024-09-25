@@ -1,14 +1,13 @@
 import { validate } from 'class-validator';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { Context } from 'hono';
 
 type ValidationSource = 'body' | 'query' | 'param' ;
 
-export function validateDto<T extends object>(dtoClass: any, source: ValidationSource) {
+export function validateDto(dtoClass: any, source: ValidationSource) {
   return async (c: Context, next: () => Promise<void>) => {
     try {
       let data;
-
 
       if (source === 'body') {
         data = await c.req.json();
@@ -28,6 +27,7 @@ export function validateDto<T extends object>(dtoClass: any, source: ValidationS
       c.set('validatedData', dtoInstance);
       await next();
     } catch (error) {
+      console.log(error)
       return c.json({ message: 'Invalid input' }, 400);
     }
   };

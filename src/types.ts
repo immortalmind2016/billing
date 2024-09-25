@@ -1,6 +1,3 @@
-import { D1Database } from '@cloudflare/workers-types';
-
-
 export const TYPES = {
 	SubscriptionService: Symbol.for('SubscriptionService'),
 	SubscriptionRepository: Symbol.for('SubscriptionRepository'),

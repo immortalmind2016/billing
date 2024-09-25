@@ -1,7 +1,5 @@
 import "reflect-metadata";
 import { IsOptional, IsString } from "class-validator";
-import { Customer } from "@prisma/client";
-
 
 export class CustomerInput {
 	@IsString()

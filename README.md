@@ -20,6 +20,9 @@ NOTE: make sure to have a .dev.env file with the correct variables.
 use the following link to access the swagger ui:
 [http://localhost:8787/api-docs](http://localhost:8787/api-docs)
 
+## CI / github actions
+- linting
+
 ## Flow overview summary
 
 ### Success flow
@@ -199,4 +202,5 @@ The webhook expects a JSON payload with the following structure:
 - Refactor the part of swagger endpoint in different file separatly.
 - Handle already subscribed customers.
 - Add migration files as per the db changes.
+- Add ci for testing
 

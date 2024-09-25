@@ -1,7 +1,6 @@
 import { PrismaClientWrapper } from '../config/dbClient';
 import { NotificationService } from '../modules/notifications/notification.service';
 import { CustomerService } from '../modules/customers/customers.service';
-import { SubscriptionService } from '../modules/subscriptions/subscriptions.service';
 import { SubscriptionPlanStatus } from '../modules/subscriptions/types';
 import { CustomerRepository } from '../modules/customers/customers.repository';
 

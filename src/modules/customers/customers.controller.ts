@@ -5,7 +5,6 @@ import { CustomerService } from "./customers.service";
 import { Get, Route ,Body, Post, Path, Put, Security, Inject} from "@tsoa/runtime";
 import { CustomerInput, CustomerLoginDto } from "./dto/customer-input.dto";
 import { Customer } from "@prisma/client";
-import {ErrorHandler} from "hono"
 import { HTTPException } from "hono/http-exception";
 
 @injectable()

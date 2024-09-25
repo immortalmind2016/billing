@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClientWrapper } from '../../config/dbClient';
-import { Invoice, SubscriptionPlan } from '@prisma/client';
-import { EntityNotFoundError } from '../../shared/internal/database.exceptions';
+import { Invoice } from '@prisma/client';
 import { InvoicePaymentStatus } from './types';
 
 @injectable()

@@ -5,7 +5,6 @@ import { CustomerInput } from './dto/customer-input.dto';
 import { CustomerRepository } from './customers.repository';
 import { compare, hash } from 'bcryptjs';
 import { sign } from '@tsndr/cloudflare-worker-jwt';
-import { SubscriptionPlanStatus } from '../subscriptions/types';
 
 @injectable()
 export class CustomerService {

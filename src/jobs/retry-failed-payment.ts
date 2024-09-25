@@ -1,4 +1,4 @@
-import { InvoicePaymentStatus, InvoiceStatus } from '../modules/invoices/types';
+import { InvoicePaymentStatus } from '../modules/invoices/types';
 import { PrismaClientWrapper } from '../config/dbClient';
 import { NotificationService } from '../modules/notifications/notification.service';
 

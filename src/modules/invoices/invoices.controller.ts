@@ -1,9 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../types';
-import { Get, Route, Body, Post, Path, Put, Delete } from '@tsoa/runtime';
-import { HTTPException } from 'hono/http-exception';
-import { CustomInternalError } from '../../shared/internal/custom.exceptions';
+import { Get, Route } from '@tsoa/runtime';
 import { InvoicesService } from './invoices.service';
 import { Invoice } from '@prisma/client';
 

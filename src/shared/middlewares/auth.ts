@@ -19,6 +19,7 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next) => {
     ctx.set('userId', data?.payload?.id ); // Set user ID in context for later use
     await next();
   } catch (err) {
+    console.log(err)
     return ctx.json({ message: 'Invalid or expired token' }, 401);
   }
 };

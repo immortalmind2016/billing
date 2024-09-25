@@ -5,8 +5,6 @@ import { TYPES } from '../../types';
 import { validateDto } from '../../shared/middlewares/validator';
 import { CreateCustomerSubscriptionDto, SubscriptionPlanInput, SubscriptionUpdateDto } from './dto/subscription-input.dto';
 import { QueryParamDto } from '../../shared/dto/query.dto';
-import { HTTPException } from 'hono/http-exception';
-import { CustomInternalError } from '../../shared/internal/custom.exceptions';
 import { jwtAuthMiddleware } from '../../shared/middlewares/auth';
 
 export class SubscriptionHandler {

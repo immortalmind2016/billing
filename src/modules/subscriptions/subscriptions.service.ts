@@ -3,9 +3,8 @@ import { SubscriptionRepository } from './subscriptions.repository';
 import { TYPES } from '../../types';
 import { SubscriptionPlanInput } from './dto/subscription-input.dto';
 import { Customer, SubscriptionPlan } from '@prisma/client';
-import { CustomerRepository } from '../customers/customers.repository';
 import { CustomerService } from './../customers/customers.service';
-import { BillingCycle, SubscriptionPlanStatus } from './types';
+import { BillingCycle } from './types';
 import { EntityNotFoundError } from '../../shared/internal/database.exceptions';
 import { InvoicePaymentStatus, InvoiceStatus } from '../invoices/types';
 import { InvoicesService } from '../invoices/invoices.service';
@@ -93,7 +92,7 @@ export class SubscriptionService {
 
 	private async calculateInvoiceDetails(customer: Customer, newPlan: SubscriptionPlan): Promise<{ adjustedAmount: number, dueDate: Date }> {
 		let adjustedAmount = newPlan.price;
-		let dueDate = new Date();
+		const dueDate = new Date();
 
 		if (customer.subscriptionPlanId && customer.subscriptionStartDate) {
 			const currentPlan = await this.subscriptionRepository.findOneById(customer.subscriptionPlanId);

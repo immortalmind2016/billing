@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
-
+import axios from 'axios';
 @injectable()
 export class NotificationService {
   constructor(@inject('Env') private env: Env) {}
 
   async sendNotification(data: any) {
-    const axios = require('axios');
+
     
     try {
       const response = await axios.post('https://api.sendinblue.com/v3/smtp/email', {

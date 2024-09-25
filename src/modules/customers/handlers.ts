@@ -4,7 +4,6 @@ import { TYPES } from '../../types';
 import { validateDto } from '../../shared/middlewares/validator';
 import { CustomerInput,CustomerLoginDto,CustomerUpdateDto } from './dto/customer-input.dto';
 import { CustomerController } from './customers.controller';
-import { QueryParamDto } from '../../shared/dto/query.dto';
 import { jwtAuthMiddleware } from '../../shared/middlewares/auth';
 
 export class CustomerHandler{

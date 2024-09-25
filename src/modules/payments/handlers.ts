@@ -1,4 +1,4 @@
-import { Context, Hono } from 'hono';
+import { Hono } from 'hono';
 import { container } from '../../config/di-config';
 import { TYPES } from '../../types';
 import { PaymentsController } from './payments.controller';

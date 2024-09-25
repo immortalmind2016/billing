@@ -1,9 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../types';
-import { Get, Route, Body, Post, Path, Put, Delete } from '@tsoa/runtime';
-import { HTTPException } from 'hono/http-exception';
-import { CustomInternalError } from '../../shared/internal/custom.exceptions';
+import { Get, Route, Body, Post} from '@tsoa/runtime';
 import { PaymentsService } from './payments.service';
 import { Payment } from '@prisma/client';
 import { PaymentWebhookInput } from './dto/payment-webhook-input.dto';

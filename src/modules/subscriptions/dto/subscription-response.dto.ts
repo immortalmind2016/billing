@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { SubscriptionPlanInput } from './subscription-input.dto';
 import { BillingCycle } from '../types';
 
