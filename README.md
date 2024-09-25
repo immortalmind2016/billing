@@ -20,8 +20,33 @@ NOTE: make sure to have a .dev.env file with the correct variables.
 use the following link to access the swagger ui:
 [http://localhost:8787/api-docs](http://localhost:8787/api-docs)
 
+## Flow overview summary
 
-## Flow Overview 
+### Success flow
+1. Customer signs up
+2. Customer selects a subscription plan
+3. Invoice is generated 
+4. Payment intent is created
+5. Recieve payment intent in you email
+6. Pay the payment intent (using /webhook)
+7. You will receive a success email
+
+### Failed flow
+1. Customer signs up
+2. Customer selects a subscription plan
+3. Invoice is generated 
+4. Payment intent is created
+5. Recieve payment intent in you email
+6. Pay the payment intent (using /webhook) [failed]
+7. You will receive a failure email
+8. After minutes you will receive a retry email
+9. Pay the payment intent (using /webhook) [success]
+10. You will receive a success email
+
+
+
+
+## Flow Overview in detail
 
 ### 1. Customer Signup
 
@@ -34,7 +59,7 @@ use the following link to access the swagger ui:
   - `Customer.password`: Hashed and stored.
   - `Customer.subscriptionPlanId`: Null (not subscribed yet).
   - `Customer.subscriptionStatus`: Null.
-  - `Customer.subscriptionStartData`: Null.
+  - `Customer.subscriptionStartDate`: Null.
 
 ### 2. Subscription Selection
 
@@ -43,7 +68,7 @@ use the following link to access the swagger ui:
 - **Status:**
   - `Customer.subscriptionPlanId`: Updated with selected plan ID.
   - `Customer.subscriptionStatus`: Set to "ACTIVE".
-  - `Customer.subscriptionStartData`: Set to current date.
+  - `Customer.subscriptionStartDate`: Set to current date.
 
 ### 3. Invoice Generation
 
@@ -162,6 +187,8 @@ The webhook expects a JSON payload with the following structure:
 
 
 
+
+
 # Future Improvements
 - Add more logging (e.g. use pinoJs)
 - Add monitoring (e.g. datadog)
@@ -171,5 +198,5 @@ The webhook expects a JSON payload with the following structure:
 - Add integration tests.
 - Refactor the part of swagger endpoint in different file separatly.
 - Handle already subscribed customers.
-
+- Add migration files as per the db changes.
 

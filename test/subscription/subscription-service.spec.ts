@@ -164,7 +164,7 @@ describe('SubscriptionService', () => {
         password: 'hashedpassword',
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -216,7 +216,7 @@ describe('SubscriptionService', () => {
         password: 'hashedpassword',
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

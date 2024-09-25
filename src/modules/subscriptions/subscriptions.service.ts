@@ -78,7 +78,7 @@ export class SubscriptionService {
 
 		await this.CustomerService.updateSubscription(customerId, {
 			subscriptionPlanId: newPlanId,
-			subscriptionStartData: new Date()
+			subscriptionStartDate: new Date()
 		});
 
 		await this.notificationsService.sendNotification({
@@ -95,12 +95,12 @@ export class SubscriptionService {
 		let adjustedAmount = newPlan.price;
 		let dueDate = new Date();
 
-		if (customer.subscriptionPlanId && customer.subscriptionStartData) {
+		if (customer.subscriptionPlanId && customer.subscriptionStartDate) {
 			const currentPlan = await this.subscriptionRepository.findOneById(customer.subscriptionPlanId);
 			if (currentPlan) {
 				// Calculate subscription end date based on current plan's billing cycle
 				const billingCycle = currentPlan.billingCycle;
-				const subscriptionEndDate = this.calculateSubscriptionEndDate(customer.subscriptionStartData, billingCycle);
+				const subscriptionEndDate = this.calculateSubscriptionEndDate(customer.subscriptionStartDate, billingCycle);
 
 				// Calculate remaining days and prorate the amount
 				const remainingDays = this.calculateRemainingDays(subscriptionEndDate);

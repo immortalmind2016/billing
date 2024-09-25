@@ -19,7 +19,7 @@ export async function autoBilling(env: Env): Promise<void> {
   const paymentsRepository = new PaymentsRepository(adapter);
   const customersRepository = new CustomerRepository(adapter);
   const customerService = new CustomerService(customersRepository, env);
-  const paymentsService = new PaymentsService(paymentsRepository, invoicesService, notificationService, customerService);
+  const paymentsService = new PaymentsService(paymentsRepository, invoicesService, notificationService, customerService,);
 
   console.log('Processing expiring subscriptions and creating new invoices');
 
@@ -29,7 +29,7 @@ export async function autoBilling(env: Env): Promise<void> {
   const expiringSubscriptions = await client.customer.findMany({
     where: {
       subscriptionStatus: 'ACTIVE',
-      subscriptionStartData: {
+      subscriptionStartDate: {
         not: null,
       },
       subscriptionPlan: {
@@ -42,9 +42,9 @@ export async function autoBilling(env: Env): Promise<void> {
   });
 
   for (const customer of expiringSubscriptions) {
-    if (!customer.subscriptionStartData || !customer.subscriptionPlan) continue;
+    if (!customer.subscriptionStartDate || !customer.subscriptionPlan) continue;
 
-    const expirationDate = new Date(customer.subscriptionStartData);
+    const expirationDate = new Date(customer.subscriptionStartDate);
     switch (customer.subscriptionPlan.billingCycle) {
       case BillingCycle.monthly:
         expirationDate.setMonth(expirationDate.getMonth() + 1);

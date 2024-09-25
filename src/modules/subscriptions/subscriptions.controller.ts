@@ -31,7 +31,6 @@ export class SubscriptionController {
 		return (await this.subscriptionService.update(id, data))
 		}
 		catch (e: any) {
-			console.log({EEEEEEEERROR:e})
 			if (e instanceof CustomInternalError) {
 				throw new HTTPException(404, { message: e.message });
 			}

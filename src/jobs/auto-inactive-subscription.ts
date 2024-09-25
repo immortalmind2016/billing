@@ -20,7 +20,7 @@ export async function autoInactiveSubscription(env: Env): Promise<void> {
   const expiredSubscriptions = await client.customer.findMany({
     where: {
       subscriptionStatus: 'ACTIVE',
-      subscriptionStartData: {
+      subscriptionStartDate: {
         not: null,
       },
       subscriptionPlan: {
@@ -33,10 +33,10 @@ export async function autoInactiveSubscription(env: Env): Promise<void> {
   });
 
   for (const customer of expiredSubscriptions) {
-    if (!customer.subscriptionStartData || !customer.subscriptionPlan) continue;
+    if (!customer.subscriptionStartDate || !customer.subscriptionPlanId) continue;
 
-    const expirationDate = new Date(customer.subscriptionStartData);
-    switch (customer.subscriptionPlan.billingCycle) {
+    const expirationDate = new Date(customer.subscriptionStartDate);
+    switch (customer?.subscriptionPlan?.billingCycle) {
       case 'monthly':
         expirationDate.setMonth(expirationDate.getMonth() + 1);
         break;

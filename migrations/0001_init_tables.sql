@@ -6,7 +6,7 @@ CREATE TABLE "Customer" (
     "password" TEXT NOT NULL,
     "subscriptionPlanId" TEXT,
     "subscriptionStatus" TEXT,
-    "subscriptionStartData" DATETIME,
+    "subscriptionStartDate" DATETIME,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Customer_subscriptionPlanId_fkey" FOREIGN KEY ("subscriptionPlanId") REFERENCES "SubscriptionPlan" ("id") ON DELETE SET NULL ON UPDATE CASCADE

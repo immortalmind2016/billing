@@ -37,7 +37,7 @@ describe('CustomerService', () => {
         name,
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -80,7 +80,7 @@ describe('CustomerService', () => {
         name: 'Test User',
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -115,7 +115,7 @@ describe('CustomerService', () => {
         name: 'Test User',
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -154,7 +154,7 @@ describe('CustomerService', () => {
         password: 'hashedpassword',
         subscriptionPlanId: null,
         subscriptionStatus: null,
-        subscriptionStartData: null,
+        subscriptionStartDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

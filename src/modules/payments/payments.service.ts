@@ -33,6 +33,7 @@ export class PaymentsService {
 
 		const updatedPayment=await this.paymentsRepository.updatePayment(data.paymentId,updateData);
 		const customer=await this.customerService.findOne(data.customerId)
+		
 		if(!customer) throw new EntityNotFoundError('Customer',data.customerId)
 		if(data.status==PaymentWebhookStatus.PAID){
 			await this.invoicesService.updateInvoice(updatedPayment.invoiceId,{
@@ -40,7 +41,9 @@ export class PaymentsService {
 				paymentStatus:InvoicePaymentStatus.PAID,
 				status:InvoiceStatus.ISSUED
 			})
-			
+			if(customer)
+			await this.sendPaymentSuccessEmail(customer)
+		
 		}else{
 			await this.sendFailedPaymentEmail(customer,data.paymentId)
 			await this.invoicesService.updateInvoice(updatedPayment.invoiceId,{
@@ -58,12 +61,12 @@ export class PaymentsService {
 			});
 		}
 	}
-	async sendPaymentSuccessEmail(customer: Customer,planName:string) {
+	async sendPaymentSuccessEmail(customer: Customer) {
 		if (customer) {
 			await this.notificationsService.sendNotification({
 				to: customer.email,
 				subject: 'Subscription Payment',
-				content: `Your payment has been successful on plan ${planName}`
+				content: `Your payment has been successful`
 			});
 		}
 	}

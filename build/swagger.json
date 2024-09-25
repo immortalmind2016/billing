@@ -228,7 +228,7 @@
 					"subscriptionStatus": {
 						"type": "string"
 					},
-					"subscriptionStartData": {
+					"subscriptionStartDate": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -646,7 +646,7 @@
 											"type": "string",
 											"format": "date-time"
 										},
-										"subscriptionStartData": {
+										"subscriptionStartDate": {
 											"type": "string",
 											"format": "date-time"
 										},
@@ -672,7 +672,7 @@
 									"required": [
 										"updatedAt",
 										"createdAt",
-										"subscriptionStartData",
+										"subscriptionStartDate",
 										"subscriptionStatus",
 										"subscriptionPlanId",
 										"password",
@@ -712,7 +712,7 @@
 											"type": "string",
 											"format": "date-time"
 										},
-										"subscriptionStartData": {
+										"subscriptionStartDate": {
 											"type": "string",
 											"format": "date-time"
 										},
@@ -738,7 +738,7 @@
 									"required": [
 										"updatedAt",
 										"createdAt",
-										"subscriptionStartData",
+										"subscriptionStartDate",
 										"subscriptionStatus",
 										"subscriptionPlanId",
 										"password",
