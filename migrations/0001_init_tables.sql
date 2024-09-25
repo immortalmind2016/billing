@@ -7,6 +7,8 @@ CREATE TABLE "Customer" (
     "subscriptionPlanId" TEXT,
     "subscriptionStatus" TEXT,
     "subscriptionStartData" DATETIME,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Customer_subscriptionPlanId_fkey" FOREIGN KEY ("subscriptionPlanId") REFERENCES "SubscriptionPlan" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -16,7 +18,9 @@ CREATE TABLE "SubscriptionPlan" (
     "name" TEXT NOT NULL,
     "billingCycle" TEXT NOT NULL,
     "price" REAL NOT NULL,
-    "status" TEXT NOT NULL
+    "status" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
 );
 
 -- CreateTable
@@ -26,7 +30,11 @@ CREATE TABLE "Invoice" (
     "amount" REAL NOT NULL,
     "dueDate" DATETIME NOT NULL,
     "paymentStatus" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "paymentDate" DATETIME,
+    "retryAttempts" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Invoice_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "Customer" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -37,6 +45,8 @@ CREATE TABLE "Payment" (
     "amount" REAL NOT NULL,
     "paymentMethod" TEXT NOT NULL,
     "paymentDate" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
     CONSTRAINT "Payment_invoiceId_fkey" FOREIGN KEY ("invoiceId") REFERENCES "Invoice" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 

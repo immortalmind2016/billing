@@ -56,4 +56,11 @@ export class CustomerService {
       name
     });
   }
+
+  async updateSubscription(customerId: string, {subscriptionPlanId,subscriptionStartData}:{subscriptionPlanId:string,subscriptionStartData:Date} ): Promise<Customer | null> {
+    return this.customerRepository.update(customerId, {
+      subscriptionPlanId,
+      subscriptionStartData,
+    });
+  }
 }

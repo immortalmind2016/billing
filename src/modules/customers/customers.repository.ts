@@ -15,6 +15,7 @@ export class CustomerRepository {
   }
 
 	async findOne(id:string): Promise<Customer|null> {
+    console.log({SSSSS:id})
     return this.prisma.client.customer.findUnique({
 			where:{
 				id

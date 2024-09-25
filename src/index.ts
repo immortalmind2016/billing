@@ -4,6 +4,9 @@ import { container } from './config/di-config';
 import { SubscriptionHandler } from './modules/subscriptions/handlers';
 import swaggerDoc from '../build/swagger.json';
 import { CustomerHandler } from './modules/customers/handlers';
+import { InvoicesHandler } from './modules/invoices/handlers';
+import { PaymentsHandler } from './modules/payments/handlers';
+import { retryFailedPayment } from './jobs/retry-failed-payment';
 
 class App {
 	static app = new Hono();
@@ -50,6 +53,9 @@ class App {
 
 				app.route('/api/subscriptions', SubscriptionHandler.routes());
 				app.route('/api/customers', CustomerHandler.routes());
+				app.route('/api/invoices', InvoicesHandler.routes());
+				app.route('/api/payments', PaymentsHandler.routes());
+
 
 				this.isDefinedRoutes = true;
 				}
@@ -57,6 +63,10 @@ class App {
 
 				return app.fetch(request, env, ctx);
 			},
+			scheduled: async (event: ScheduledEvent, env: Env, ctx: ExecutionContext) => {
+				console.log('Scheduled event triggered');
+				ctx.waitUntil(retryFailedPayment(env));
+			  },
 		};
 	}
 }

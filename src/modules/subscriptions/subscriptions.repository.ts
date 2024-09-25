@@ -17,7 +17,7 @@ export class SubscriptionRepository {
 		return this.prisma.client.subscriptionPlan.findMany();
 	}
 
-	async create(data: Omit<SubscriptionPlan, 'id'>): Promise<SubscriptionPlan> {
+	async create(data: Omit<SubscriptionPlan, 'id' | 'createdAt' | 'updatedAt'>): Promise<SubscriptionPlan> {
 		return this.prisma.client.subscriptionPlan.create({
 			data,
 		});
