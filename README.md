@@ -1,6 +1,27 @@
 # Subscription Management System
 
-## Flow Overview
+
+## How to run the project
+
+NOTE: make sure to have a .dev.env file with the correct variables.
+1. Install the dependencies: `pnpm install`
+2. `npx wrangler d1 migrations apply billing-app-prod --local`
+3. `npm run dev`
+
+## How to start the cron jobs locally
+1. `npx wrangler dev --test-scheduled`
+
+## How to run the tests
+1. `npm run test`
+
+## Swagger
+#### to build the swagger file:
+`npx tsoa spec`
+use the following link to access the swagger ui:
+[http://localhost:8787/api-docs](http://localhost:8787/api-docs)
+
+
+## Flow Overview 
 
 ### 1. Customer Signup
 
@@ -109,5 +130,45 @@ The invoice amount is calculated based on the subscription plan and any prorated
    - Days in Current Period: Number of days from the start of the subscription (or last billing date) to the end of the current period (or cancellation date)
 
 This calculation ensures that customers are billed accurately for the exact duration of their subscription, even if they start or end their subscription mid-cycle.
+
+
+
+
+## Payment Webhook
+
+The system includes a payment webhook endpoint to handle payment confirmations from the payment processor (e.g., Stripe). This webhook ensures that the system is updated with the latest payment information.
+
+### Webhook Endpoint
+
+- **URL:** `/payments/webhook`
+- **Method:** POST
+
+### Webhook Payload
+
+The webhook expects a JSON payload with the following structure: 
+
+```
+{
+
+    "paymentId":"cm1i3qmad0003148y3njymnsi",
+    "amount":29.99,
+    "status":"PAID",
+    "paymentDate": "2024-09-23T00:00:00Z",
+    "customerId":"cm1i3nfgr00019qnm1rggrz5v"
+
+}
+```
+
+
+
+
+# Future Improvements
+- Add more logging (e.g. use pinoJs)
+- Add monitoring (e.g. datadog)
+- Add more error handling
+- Add admin middleware to protect the endpoints.
+- Add more tests.
+- Refactor the part of swagger endpoint in different file separatly.
+- Handle already subscribed customers.
 
 

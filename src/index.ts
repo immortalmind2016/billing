@@ -22,7 +22,6 @@ class App {
 				if (!this.isDefinedRoutes) {
 
 					container.bind('Env').toConstantValue(env);
-						console.log({EEEEEEE:env})
 					this. app.get('/api-docs', (c) => {
 						return c.html(`
 							<html>

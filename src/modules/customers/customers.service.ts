@@ -35,9 +35,7 @@ export class CustomerService {
     if (!isPasswordValid) {
       return null;
     }
-		console.log({ id: customer.id, email: customer.email }, this.env.JWT_SECRET, {
-      expiresIn: '1h',
-    })
+	
     const token = sign({ id: customer.id, email: customer.email }, this.env.JWT_SECRET);
 
     return token;

@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '../../types';
 import { SubscriptionService } from './subscriptions.service';
 import { SubscriptionPlan } from './dto/subscription-response.dto';
-import { Get, Route, Body, Post, Path, Put, Delete } from '@tsoa/runtime';
+import { Get, Route, Body, Post, Path, Put, Delete, Security, Inject,   } from '@tsoa/runtime';
 import { HTTPException } from 'hono/http-exception';
 import { CustomInternalError } from '../../shared/internal/custom.exceptions';
 
@@ -54,7 +54,16 @@ export class SubscriptionController {
 	}
 
 	@Post('/create')
-	async subscribe(customerId: string, @Body() id: string) {
-		return this.subscriptionService.subscribe(customerId, id);
+	@Security('jwt')
+	async subscribe(@Inject() customerId: string, @Body() id: string) {
+		try{
+			return await this.subscriptionService.subscribe(customerId, id);
+		}
+		catch (e: any) {
+			if (e instanceof CustomInternalError) {
+				throw new HTTPException(404, { message: e.message });
+			}
+			throw new HTTPException(400, { message: e.message });
+		}
 	}
 }

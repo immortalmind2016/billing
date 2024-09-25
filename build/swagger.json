@@ -10,7 +10,8 @@
 			"BillingCycle": {
 				"enum": [
 					"monthly",
-					"yearly"
+					"yearly",
+					"quarterly"
 				],
 				"type": "string"
 			},
@@ -65,28 +66,160 @@
 				"type": "object",
 				"description": "Make all properties in T optional"
 			},
-			"CustomerInput": {
+			"DefaultSelection_Prisma._36_PaymentPayload_": {
 				"properties": {
-					"name": {
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"paymentDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"paymentMethod": {
 						"type": "string"
 					},
-					"email": {
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"invoiceId": {
+						"type": "string"
+					},
+					"id": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"name",
-					"email"
+					"updatedAt",
+					"createdAt",
+					"paymentDate",
+					"paymentMethod",
+					"amount",
+					"invoiceId",
+					"id"
+				],
+				"type": "object"
+			},
+			"Payment": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_PaymentPayload_",
+				"description": "Model Payment"
+			},
+			"PaymentWebhookStatus": {
+				"enum": [
+					"PAID",
+					"FAILED"
+				],
+				"type": "string"
+			},
+			"PaymentWebhookInput": {
+				"properties": {
+					"paymentDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"$ref": "#/components/schemas/PaymentWebhookStatus"
+					},
+					"paymentId": {
+						"type": "string"
+					},
+					"customerId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"paymentDate",
+					"amount",
+					"status",
+					"paymentId",
+					"customerId"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"DefaultSelection_Prisma._36_InvoicePayload_": {
+				"properties": {
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"retryAttempts": {
+						"type": "number",
+						"format": "double"
+					},
+					"paymentDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"status": {
+						"type": "string"
+					},
+					"paymentStatus": {
+						"type": "string"
+					},
+					"dueDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"customerId": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"updatedAt",
+					"createdAt",
+					"retryAttempts",
+					"paymentDate",
+					"status",
+					"paymentStatus",
+					"dueDate",
+					"amount",
+					"customerId",
+					"id"
+				],
+				"type": "object"
+			},
+			"Invoice": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_InvoicePayload_",
+				"description": "Model Invoice"
 			},
 			"Partial_Omit_Customer.id__": {
 				"properties": {
 					"name": {
 						"type": "string"
 					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
 					"email": {
+						"type": "string"
+					},
+					"password": {
 						"type": "string"
 					},
 					"subscriptionPlanId": {
@@ -94,13 +227,60 @@
 					},
 					"subscriptionStatus": {
 						"type": "string"
+					},
+					"subscriptionStartData": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
+			},
+			"CustomerInput": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomerLoginDto": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "Authorization",
+				"description": "JWT obtained from the login endpoint."
+			}
+		}
 	},
 	"info": {
 		"title": "billing-app",
@@ -119,6 +299,14 @@
 								"schema": {
 									"items": {
 										"properties": {
+											"updatedAt": {
+												"type": "string",
+												"format": "date-time"
+											},
+											"createdAt": {
+												"type": "string",
+												"format": "date-time"
+											},
 											"status": {
 												"type": "string"
 											},
@@ -137,6 +325,8 @@
 											}
 										},
 										"required": [
+											"updatedAt",
+											"createdAt",
 											"status",
 											"price",
 											"billingCycle",
@@ -163,6 +353,14 @@
 							"application/json": {
 								"schema": {
 									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
 										"status": {
 											"type": "string"
 										},
@@ -181,6 +379,8 @@
 										}
 									},
 									"required": [
+										"updatedAt",
+										"createdAt",
 										"status",
 										"price",
 										"billingCycle",
@@ -217,6 +417,14 @@
 							"application/json": {
 								"schema": {
 									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
 										"status": {
 											"type": "string"
 										},
@@ -235,6 +443,8 @@
 										}
 									},
 									"required": [
+										"updatedAt",
+										"createdAt",
 										"status",
 										"price",
 										"billingCycle",
@@ -296,7 +506,7 @@
 				]
 			}
 		},
-		"/api/subscriptions/customers/{customerId}/subscription": {
+		"/api/subscriptions/create": {
 			"post": {
 				"operationId": "Subscribe",
 				"responses": {
@@ -306,28 +516,12 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"subscriptionStatus": {
-											"type": "string"
-										},
-										"subscriptionPlanId": {
-											"type": "string"
-										},
-										"email": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"id": {
+										"intentId": {
 											"type": "string"
 										}
 									},
 									"required": [
-										"subscriptionStatus",
-										"subscriptionPlanId",
-										"email",
-										"name",
-										"id"
+										"intentId"
 									],
 									"type": "object"
 								}
@@ -335,17 +529,12 @@
 						}
 					}
 				},
-				"security": [],
-				"parameters": [
+				"security": [
 					{
-						"in": "path",
-						"name": "customerId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
+						"jwt": []
 					}
 				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -358,9 +547,9 @@
 				}
 			}
 		},
-		"/api/customers": {
+		"/api/payments": {
 			"get": {
-				"operationId": "List",
+				"operationId": "GetPayments",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -368,31 +557,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"properties": {
-											"subscriptionStatus": {
-												"type": "string"
-											},
-											"subscriptionPlanId": {
-												"type": "string"
-											},
-											"email": {
-												"type": "string"
-											},
-											"name": {
-												"type": "string"
-											},
-											"id": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"subscriptionStatus",
-											"subscriptionPlanId",
-											"email",
-											"name",
-											"id"
-										],
-										"type": "object"
+										"$ref": "#/components/schemas/Payment"
 									},
 									"type": "array"
 								}
@@ -402,9 +567,11 @@
 				},
 				"security": [],
 				"parameters": []
-			},
+			}
+		},
+		"/api/payments/webhook": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "Webhook",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -412,10 +579,84 @@
 							"application/json": {
 								"schema": {
 									"properties": {
+										"success": {
+											"type": "boolean"
+										}
+									},
+									"required": [
+										"success"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PaymentWebhookInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/invoices": {
+			"get": {
+				"operationId": "GetInvoices",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Invoice"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/customers/me": {
+			"get": {
+				"operationId": "Find",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"subscriptionStartData": {
+											"type": "string",
+											"format": "date-time"
+										},
 										"subscriptionStatus": {
 											"type": "string"
 										},
 										"subscriptionPlanId": {
+											"type": "string"
+										},
+										"password": {
 											"type": "string"
 										},
 										"email": {
@@ -429,11 +670,131 @@
 										}
 									},
 									"required": [
+										"updatedAt",
+										"createdAt",
+										"subscriptionStartData",
 										"subscriptionStatus",
 										"subscriptionPlanId",
+										"password",
 										"email",
 										"name",
 										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/customers/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"updatedAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"subscriptionStartData": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"subscriptionStatus": {
+											"type": "string"
+										},
+										"subscriptionPlanId": {
+											"type": "string"
+										},
+										"password": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										},
+										"name": {
+											"type": "string"
+										},
+										"id": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"updatedAt",
+										"createdAt",
+										"subscriptionStartData",
+										"subscriptionStatus",
+										"subscriptionPlanId",
+										"password",
+										"email",
+										"name",
+										"id"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_Omit_Customer.id__"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/customers/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
 									],
 									"type": "object"
 								}
@@ -455,9 +816,9 @@
 				}
 			}
 		},
-		"/api/customers/{id}": {
-			"get": {
-				"operationId": "Find",
+		"/api/customers/login": {
+			"post": {
+				"operationId": "Login",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -465,102 +826,28 @@
 							"application/json": {
 								"schema": {
 									"properties": {
-										"subscriptionStatus": {
-											"type": "string"
-										},
-										"subscriptionPlanId": {
-											"type": "string"
-										},
-										"email": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"id": {
+										"token": {
 											"type": "string"
 										}
 									},
 									"required": [
-										"subscriptionStatus",
-										"subscriptionPlanId",
-										"email",
-										"name",
-										"id"
+										"token"
 									],
-									"type": "object"
+									"type": "object",
+									"nullable": true
 								}
 							}
 						}
 					}
 				},
 				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"put": {
-				"operationId": "Update",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"subscriptionStatus": {
-											"type": "string"
-										},
-										"subscriptionPlanId": {
-											"type": "string"
-										},
-										"email": {
-											"type": "string"
-										},
-										"name": {
-											"type": "string"
-										},
-										"id": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"subscriptionStatus",
-										"subscriptionPlanId",
-										"email",
-										"name",
-										"id"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/Partial_Omit_Customer.id__"
+								"$ref": "#/components/schemas/CustomerLoginDto"
 							}
 						}
 					}

@@ -5,11 +5,20 @@
 	"controllerPathGlobs": ["src/**/*Controller.ts"],
 	"spec": {
 	  "outputDirectory": "build",
-	  "specVersion": 3
+	  "specVersion": 3,
+	  "securityDefinitions": {
+	   "jwt": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "JWT obtained from the login endpoint."
+      }
+	}
 	},
 	"routes": {
 	  "routesDir": "build",
 	  "middlewareTemplate": "./hono.template.hbs"
 
 	}
+	
   }

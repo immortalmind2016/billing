@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 import { CustomerService } from "./customers.service";
-import { Get, Route ,Body, Post, Path, Put} from "@tsoa/runtime";
+import { Get, Route ,Body, Post, Path, Put, Security, Inject} from "@tsoa/runtime";
 import { CustomerInput, CustomerLoginDto } from "./dto/customer-input.dto";
 import { Customer } from "@prisma/client";
 import {ErrorHandler} from "hono"
@@ -19,13 +19,15 @@ export class CustomerController {
 
 	 // get my info
 	 @Get("/me")
-	 async find(id:string) {
+	 @Security('jwt')
+	 async find(@Inject() id:string) {
 		 return this.customerService.findOne(id);
 	 }
 
 
   // Update an existing customer
 	@Put("/{id}")
+  @Security('jwt')
   async update(@Path() id: string,@Body() data: Partial<Omit<Customer,"id">>) {
     return this.customerService.update(id, data);
   }

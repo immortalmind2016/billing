@@ -3,8 +3,6 @@
 interface Env {
 	DATABASE_URL: string;
 	JWT_SECRET: string;
-	SENDGRID_API_KEY: string;
-	SENDGRID_FROM_EMAIL: string;
 	SENDINBLUE_FROM_EMAIL: string;
 	SENDINBLUE_API_KEY: string;
 	DB: D1Database;
