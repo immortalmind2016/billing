@@ -24,6 +24,23 @@ use the following link to access the swagger ui:
 - linting
 - testing
 
+## Depency injection
+### Why?
+- It helps to decouple the classes from each other.
+- It helps to make the code more testable.
+- It helps to make the code more maintainable.
+
+### We are using the `inversify` library to handle the dependency injection.
+- Use the `@injectable()` decorator to make the class injectable.
+- Use the `@inject()` decorator to inject the dependencies.
+- Use the `container.bind().to(Class).inSingletonScope()` to bind the class to the container.
+- Use the `container.get(Class)` to get the instance of the class.
+example: 
+```
+container.bind(TYPES.SubscriptionService).to(SubscriptionService);
+const subscriptionService = container.get(TYPES.SubscriptionService);
+```
+
 ## Flow overview summary
 
 ### Success flow
