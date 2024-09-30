@@ -6,6 +6,7 @@ import { Get, Route ,Body, Post, Path, Put, Security, Inject} from "@tsoa/runtim
 import { CustomerInput, CustomerLoginDto } from "./dto/customer-input.dto";
 import { Customer } from "@prisma/client";
 import { HTTPException } from "hono/http-exception";
+import { RemoveFields } from "../../shared/decorators/remove-fields";
 
 @injectable()
 @Route("/api/customers")
@@ -19,6 +20,7 @@ export class CustomerController {
 	 // get my info
 	 @Get("/me")
 	 @Security('jwt')
+   @RemoveFields(["password"])
 	 async find(@Inject() id:string) {
 		 return this.customerService.findOne(id);
 	 }
@@ -27,6 +29,7 @@ export class CustomerController {
   // Update an existing customer
 	@Put("/{id}")
   @Security('jwt')
+  @RemoveFields(["password"])
   async update(@Path() id: string,@Body() data: Partial<Omit<Customer,"id">>) {
     return this.customerService.update(id, data);
   }
